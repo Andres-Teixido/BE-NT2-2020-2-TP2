@@ -7,7 +7,8 @@ import Modo from "./components/modo";
 
 export default function App() {
 
-  const [run, setRun] = useState(false);
+  // const [run, setRun] = useState(false);
+  // let [equipo, setEquipo] = useState("ORT Belgrano");
 
   // constructor(props) {
   //   super(props)
@@ -114,7 +115,7 @@ export default function App() {
   }
 
   function resetButton() {
-    setRun(false);
+    // setEquipo("EQUiP");
     // this.state.run = false;
     // this.state.modo = 'Largo';
     // clearInterval(this.state.timer);
