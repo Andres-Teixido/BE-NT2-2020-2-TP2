@@ -1,29 +1,56 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { Component } from 'react';
-import {Platform, StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import {Platform, StyleSheet, Text, View, TouchableOpacity, Button } from 'react-native';
 import {vibrate} from './utils'
 import Modo from "./components/modo";
 // import Timer from "./components/timer";
 
-export default class App extends Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      modo: 'Largo',
-      run: false,
-      timer: null,
-      minutos: 0,
-      minutosLargo: 25,
-      minutosCorto: 5,
-      segundos: 0,
-      cent: 0,
-      startStopText: 'Start',
-    }
-    this.startStopButton = this.startStopButton.bind(this);
-    this.resetButton = this.resetButton.bind(this);
-  }
+export default function App() {
+
+  const [run, setRun] = useState(false);
+
+  // constructor(props) {
+  //   super(props)
+  //   this.state = {
+  //     modo: 'Largo',
+  //     run: false,
+  //     timer: null,
+  //     minutos: 0,
+  //     minutosLargo: 25,
+  //     minutosCorto: 5,
+  //     segundos: 0,
+  //     cent: 0,
+  //     startStopText: 'Start',
+  //   }
+  //   this.startStopButton = this.startStopButton.bind(this);
+  //   this.resetButton = this.resetButton.bind(this);
+  // }
   
-  startStopButton() {
+  // render() {
+  return (
+
+    <View style={styles.body}>
+      <View style={styles.tContainer}>
+        <Text style={styles.buttonText}>Cronómetro Pomodoro</Text>
+        <Modo modo={this.state.modo}/>
+        <Text style={styles.counterText}>
+          {this.state.minutos} {this.state.segundos} {this.state.cent}
+        </Text>
+
+        <View style={styles.buttonContainer}>
+          <TouchableOpacity style={styles.button} onPress={startStopButton}>
+            <Text style={styles.buttonText}>{this.state.startStopText}</Text>
+          </TouchableOpacity>
+          <Button 
+            title="Reset"
+            onPress={resetButton}
+            />
+        </View>
+      </View>
+    </View>
+  );
+
+  function startStopButton() {
     if(!this.state.run){
       this.cargoMinutos();
     }
@@ -66,14 +93,16 @@ export default class App extends Component {
       this.setState(this.state);
     }
   }
-  swapModo(){
+
+  function swapModo(){
     if(this.state.modo=='Largo'){
       this.state.modo = 'Corto';
     }else{
       this.state.modo = 'Largo';
     }
   }
-  cargoMinutos() {
+
+  function cargoMinutos() {
     this.state.cent = 0;
     this.state.segundos = 0;
     if(this.state.modo=='Largo'){
@@ -83,40 +112,19 @@ export default class App extends Component {
     }
     this.state.run = true;
   }
-  resetButton() {
-    this.state.run = false;
-    this.state.modo = 'Largo';
-    clearInterval(this.state.timer);
-    this.state.startStopText = 'Start';
-    this.cargoMinutos();
-    this.state.timer = null;
-    this.setState(this.state);
+
+  function resetButton() {
+    setRun(false);
+    // this.state.run = false;
+    // this.state.modo = 'Largo';
+    // clearInterval(this.state.timer);
+    // this.state.startStopText = 'Start';
+    // this.cargoMinutos();
+    // this.state.timer = null;
+    // this.setState(this.state);
   }
 
-  render() {
-  return (
-
-    <View style={styles.body}>
-      <View style={styles.tContainer}>
-        <Text style={styles.buttonText}>Cronómetro Pomodoro</Text>
-        <Modo modo={this.state.modo}/>
-        <Text style={styles.counterText}>
-          {this.state.minutos} {this.state.segundos} {this.state.cent}
-        </Text>
-
-        <View style={styles.buttonContainer}>
-          <TouchableOpacity style={styles.button} onPress={this.startStopButton}>
-            <Text style={styles.buttonText}>{this.state.startStopText}</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.button} onPress={this.resetButton}>
-            <Text style={styles.buttonText}>Reset</Text>
-          </TouchableOpacity>
-        </View>
-      </View>
-    </View>
-  );
-  }
-
+  // }
 }
 
 const styles = StyleSheet.create({
