@@ -124,8 +124,6 @@ export default function App() {
     // this.state.timer = null;
     // this.setState(this.state);
   }
-
-  // }
 }
 
 const styles = StyleSheet.create({
