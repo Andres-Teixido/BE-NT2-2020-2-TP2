@@ -10,8 +10,8 @@ export default function App() {
 
   const [run, setRun] = useState(false);
   let [modo, setModo] = useState(' ');
-  let [minutosCorto, setMinutosCorto] = useState(2);
-  let [minutosLargo, setMinutosLargo] = useState(4);
+  let [minutosCorto, setMinutosCorto] = useState(5);
+  let [minutosLargo, setMinutosLargo] = useState(25);
   let minL=minutosLargo;
   let minC=minutosCorto;
   let [minutos, setMinutos] = useState(0);
