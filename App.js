@@ -132,7 +132,7 @@ export default function App() {
           setMinutos(minutos);
           setSegundo1(segundo1);
           setSegundo2(segundo2);
-        },100
+        },1000
       ));
     }else{
       // Stop cronómetro
