@@ -1,127 +1,132 @@
 import { StatusBar } from 'expo-status-bar';
-import React, { Component } from 'react';
-import {Platform, StyleSheet, Text, View, TouchableOpacity, Button } from 'react-native';
+import React, { useState, useEffect } from 'react';
+import {TouchableOpacity, Button, StyleSheet, Text, View } from 'react-native';
 import {vibrate} from './utils'
 import Modo from "./components/modo";
-// import Timer from "./components/timer";
+import Digitos from "./components/digitos";
 
 export default function App() {
 
-  // const [run, setRun] = useState(false);
-  // let [equipo, setEquipo] = useState("ORT Belgrano");
+  const [run, setRun] = useState(false);
+  const [modo, setModo] = useState("Largo");
+  let min;
+  let [minutos, setMinutos] = useState(2);
+  let seg1;
+  let [segundo1, setSegundo1] = useState(0);
+  let seg2;
+  let [segundo2, setSegundo2] = useState(0);
+  let dec;
+  let [decimas, setDecimas] = useState(0);
+  const [startStopText, setStartStopText] = useState('Start');
+  const [timer, setTimer] = useState(null);
 
-  // constructor(props) {
-  //   super(props)
-  //   this.state = {
-  //     modo: 'Largo',
-  //     run: false,
-  //     timer: null,
-  //     minutos: 0,
-  //     minutosLargo: 25,
-  //     minutosCorto: 5,
-  //     segundos: 0,
-  //     cent: 0,
-  //     startStopText: 'Start',
-  //   }
-  //   this.startStopButton = this.startStopButton.bind(this);
-  //   this.resetButton = this.resetButton.bind(this);
-  // }
-  
-  // render() {
+  useEffect(() => {
+    // console.log("Hola .... aqui inicia mi componente!")
+  })
+
   return (
-
     <View style={styles.body}>
       <View style={styles.tContainer}>
         <Text style={styles.buttonText}>Cronómetro Pomodoro</Text>
-        <Modo modo={this.state.modo}/>
-        <Text style={styles.counterText}>
-          {this.state.minutos} {this.state.segundos} {this.state.cent}
+        <Modo modo={modo}/>
+        <Text style={styles.counterText}> 
+          <Digitos 
+            minutos={minutos}
+            segundo1={segundo1}
+            segundo2={segundo2}
+          />
         </Text>
-
         <View style={styles.buttonContainer}>
           <TouchableOpacity style={styles.button} onPress={startStopButton}>
-            <Text style={styles.buttonText}>{this.state.startStopText}</Text>
+            <Text style={styles.buttonText}>{startStopText}</Text>
           </TouchableOpacity>
-          <Button 
-            title="Reset"
-            onPress={resetButton}
-            />
+          <TouchableOpacity style={styles.button} onPress={resetButton}>
+            <Text style={styles.buttonText}>{"Reset"}</Text>
+          </TouchableOpacity>
         </View>
       </View>
     </View>
+
   );
 
-  function startStopButton() {
-    if(!this.state.run){
-      this.cargoMinutos();
-    }
-    if (this.state.timer == null){
-      // Iniciar Crono
-      this.state.startStopText = 'Stop';
-      this.setState(this.state);
-
-      this.state.timer = setInterval(() => {
-        this.state.cent -= 1;
-        if(this.state.cent < 0){
-          if(this.state.segundos>0 || this.state.minutos>0){
-            this.state.cent = 9;
-            this.state.segundos -= 1;
-            if(this.state.segundos == -1){
-              if(this.state.minutos>0){
-                this.state.segundos = 59;
-                this.state.minutos -= 1;
-                if(this.state.minutos == -1){
-                  this.state.minutos = 0;
-                }
-              }
-            }
+  function startStopButton(){
+    if(run==false){
+      // Inicio el cronómetro
+      setRun(true)
+      setStartStopText("Stop");
+      // dec = decimas;
+      // min = minutos;
+      // seg1 = segundo1;
+      // seg2 = segundo2;
+      // console.log(min+":"+seg+":"+dec);
+      setTimer(setInterval(
+        () =>{
+          // dec = dec - 1;
+          console.log(minutos+":"+segundo1+segundo2);
+          // segundo2 -= 1;
+          if(segundo2 > 0){
+            segundo2 -= 1;
           }else{
-            // Esto causa que el teléfono vibre.
-            vibrate();
-            // Cambiar de cronómetro
-            // this.swapTimer();
-            this.state.run = false;
-            this.swapModo();
-            this.cargoMinutos();          
+            if(segundo1 > 0 || minutos > 0){
+              segundo2 = 9;
+              if(segundo1 > 0){
+                // console.log("SEGUNDO1 > 0")
+                segundo1 -= 1;
+              }else{
+                if(minutos > 0){
+                  // console.log("Minutos > 0")
+                  minutos -= 1;
+                  segundo2 = 9;
+                  segundo1 = 5;
+                }
+              }  
+            }else{
+              console.log("###   FIN   ###")
+              setStartStopText("Start");
+              setRun(false);
+              setTimer(clearInterval);
+            }
           }
-        }
-        this.setState(this.state);
-      }, 100);
+          setMinutos(minutos);
+          setSegundo1(segundo1);
+          setSegundo2(segundo2);
+        },100
+      ));
     }else{
-      clearInterval(this.state.timer);
-      this.state.timer = null;
-      this.state.startStopText = 'Start';
-      this.setState(this.state);
+      // Stop cronómetro
+      setStartStopText("Start");
+      setRun(false);
+      setTimer(clearInterval)
     }
   }
 
   function swapModo(){
-    if(this.state.modo=='Largo'){
-      this.state.modo = 'Corto';
+    if(modo=='Largo'){
+      setModo('Corto');
     }else{
-      this.state.modo = 'Largo';
+      setModo('Largo');
     }
   }
 
   function cargoMinutos() {
-    this.state.cent = 0;
-    this.state.segundos = 0;
-    if(this.state.modo=='Largo'){
-      this.state.minutos = this.state.minutosLargo;
+    setSegundo1(0);
+    setSegundo2(0);
+    if(modo=='Largo'){
+      setMinutos(25);
     }else{
-      this.state.minutos = this.state.minutosCorto;      
+      serMinutos(5);      
     }
-    this.state.run = true;
+    setRun(false);
   }
 
   function resetButton() {
-    // setEquipo("EQUiP");
-    // this.state.run = false;
-    // this.state.modo = 'Largo';
-    // clearInterval(this.state.timer);
-    // this.state.startStopText = 'Start';
-    // this.cargoMinutos();
-    // this.state.timer = null;
+    console.log("Reset")
+    setRun(false);
+    setModo('Largo');
+    setTimer(clearInterval)
+    setStartStopText('Start')
+    setTimer(null)
+    cargoMinutos();
     // this.setState(this.state);
   }
 }
