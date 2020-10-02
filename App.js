@@ -4,19 +4,19 @@ import {TouchableOpacity, Button, StyleSheet, Text, View } from 'react-native';
 import {vibrate} from './utils'
 import Modo from "./components/modo";
 import Digitos from "./components/digitos";
+import Configuracion from "./components/config";
 
 export default function App() {
 
   const [run, setRun] = useState(false);
-  const [modo, setModo] = useState("Largo");
-  let min;
-  let [minutos, setMinutos] = useState(2);
-  let seg1;
+  let [modo, setModo] = useState(' ');
+  let [minutosCorto, setMinutosCorto] = useState(2);
+  let [minutosLargo, setMinutosLargo] = useState(4);
+  let minL=minutosLargo;
+  let minC=minutosCorto;
+  let [minutos, setMinutos] = useState(0);
   let [segundo1, setSegundo1] = useState(0);
-  let seg2;
   let [segundo2, setSegundo2] = useState(0);
-  let dec;
-  let [decimas, setDecimas] = useState(0);
   const [startStopText, setStartStopText] = useState('Start');
   const [timer, setTimer] = useState(null);
 
@@ -41,50 +41,92 @@ export default function App() {
             <Text style={styles.buttonText}>{startStopText}</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.button} onPress={resetButton}>
-            <Text style={styles.buttonText}>{"Reset"}</Text>
+            <Text style={styles.buttonText}>{"Reset/Reload"}</Text>
           </TouchableOpacity>
         </View>
+
+        <Text style={styles.buttonText}>__________________________________________________________________</Text>
+        <Text style={styles.buttonText}>Configuración</Text>
+        <Text style={styles.buttonText}>__________________________________________________________________</Text>
+
+        <View style={styles.buttonContainer}>
+              <TouchableOpacity style={styles.button} onPress={() => changeMinuto(1,minutosLargo,minutosCorto)}>
+              <Text style={styles.buttonText}>{'+'}</Text>
+              </TouchableOpacity>
+              <Text style={styles.counterText}>{minutosLargo}</Text>
+              <TouchableOpacity style={styles.button} onPress={() => changeMinuto(2,minutosLargo,minutosCorto)}>
+              <Text style={styles.buttonText}>{'-'}</Text>
+              </TouchableOpacity>
+        </View>
+
+        <View style={styles.buttonContainer}>
+              <TouchableOpacity style={styles.button} onPress={() => changeMinuto(3,minutosLargo,minutosCorto)}>
+              <Text style={styles.buttonText}>{'+'}</Text>
+              </TouchableOpacity>
+              <Text style={styles.counterText}>{minutosCorto}</Text>
+              <TouchableOpacity style={styles.button} onPress={() => changeMinuto(4,minutosLargo,minutosCorto)}>
+              <Text style={styles.buttonText}>{'-'}</Text>
+              </TouchableOpacity>
+        </View>
+
       </View>
     </View>
-
   );
+
+  function changeMinuto(caso){
+    // console.log('caso = '+caso)
+    switch(caso){
+      case 1:
+        minL = minL + 1;
+      break;
+      case 2:
+        if(minL>0 && minL>minC){
+          minL = minL - 1;
+        }
+      break;
+      case 3:
+        minC = minC + 1;
+      break;
+      case 4:
+        if(minC>0){
+          minC = minC - 1;
+        }
+      break;
+    }
+    setMinutosLargo(minutosLargo = minL);
+    setMinutosCorto(minutosCorto = minC);
+    // console.log('minL = ' + minL + ' minC = ' + minC);
+    // console.log('minLargo = ' + minutosLargo + ' minCorto = ' + minutosCorto);
+  }
 
   function startStopButton(){
     if(run==false){
       // Inicio el cronómetro
-      setRun(true)
+      setRun(true);
+      cargoMinutos();
       setStartStopText("Stop");
-      // dec = decimas;
-      // min = minutos;
-      // seg1 = segundo1;
-      // seg2 = segundo2;
-      // console.log(min+":"+seg+":"+dec);
       setTimer(setInterval(
         () =>{
-          // dec = dec - 1;
-          console.log(minutos+":"+segundo1+segundo2);
-          // segundo2 -= 1;
+          // console.log(minutos+":"+segundo1+segundo2);
           if(segundo2 > 0){
             segundo2 -= 1;
           }else{
             if(segundo1 > 0 || minutos > 0){
               segundo2 = 9;
               if(segundo1 > 0){
-                // console.log("SEGUNDO1 > 0")
                 segundo1 -= 1;
               }else{
                 if(minutos > 0){
-                  // console.log("Minutos > 0")
                   minutos -= 1;
                   segundo2 = 9;
                   segundo1 = 5;
                 }
               }  
             }else{
-              console.log("###   FIN   ###")
-              setStartStopText("Start");
-              setRun(false);
-              setTimer(clearInterval);
+              console.log("###   SWAP   ###")
+              vibrate();
+              swapModo();
+              cargoMinutos();
             }
           }
           setMinutos(minutos);
@@ -102,32 +144,33 @@ export default function App() {
 
   function swapModo(){
     if(modo=='Largo'){
-      setModo('Corto');
+      setModo(modo = 'Corto');
     }else{
-      setModo('Largo');
+      setModo(modo = 'Largo');
     }
   }
 
   function cargoMinutos() {
     setSegundo1(0);
     setSegundo2(0);
-    if(modo=='Largo'){
-      setMinutos(25);
+    if(modo=='Corto'){
+      console.log('Corto');
+      setMinutos(minutos = minutosCorto);
     }else{
-      serMinutos(5);      
+      setModo(modo = 'Largo');
+      console.log('Largo');
+      setMinutos(minutos = minutosLargo);
     }
-    setRun(false);
   }
 
   function resetButton() {
     console.log("Reset")
     setRun(false);
-    setModo('Largo');
+    setModo(modo = ' ');
     setTimer(clearInterval)
     setStartStopText('Start')
     setTimer(null)
     cargoMinutos();
-    // this.setState(this.state);
   }
 }
 
