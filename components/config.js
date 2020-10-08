@@ -1,7 +1,7 @@
 import React from "react";
 import {TouchableOpacity, StyleSheet, Text, View } from 'react-native';
 
-export default ({run,minutosLargo,minutosCorto}) =>{
+export default ({run,minutosCorto, minutosLargo,fun1,fun2,fun3,fun4}) =>{
 
     if(!run){
         return (
@@ -12,24 +12,24 @@ export default ({run,minutosLargo,minutosCorto}) =>{
                 <Text style={styles.buttonText}>__________________________________________________________________</Text>
 
                 <View style={styles.buttonContainer}>
-                     <TouchableOpacity style={styles.button} onPress={() => changeMinuto(1,minutosLargo,minutosCorto)}>
-                     <Text style={styles.buttonText}>{'+'}</Text>
-                     </TouchableOpacity>
-                     <Text style={styles.counterText}>{minutosLargo}</Text>
-                     <TouchableOpacity style={styles.button} onPress={() => changeMinuto(2,minutosLargo,minutosCorto)}>
-                     <Text style={styles.buttonText}>{'-'}</Text>
-                     </TouchableOpacity>
+                  <TouchableOpacity style={styles.button} onPress={fun1}>
+                    <Text style={styles.buttonText}>{'+'}</Text>
+                  </TouchableOpacity>
+                  <Text style={styles.counterText}>{minutosLargo}</Text>
+                  <TouchableOpacity style={styles.button} onPress={fun2}>
+                    <Text style={styles.buttonText}>{'-'}</Text>
+                  </TouchableOpacity>
+                </View>
+                <View style={styles.buttonContainer}>
+                  <TouchableOpacity style={styles.button} onPress={fun3}>
+                    <Text style={styles.buttonText}>{'+'}</Text>
+                  </TouchableOpacity>
+                  <Text style={styles.counterText}>{minutosCorto}</Text>
+                  <TouchableOpacity style={styles.button} onPress={fun4}>
+                    <Text style={styles.buttonText}>{'-'}</Text>
+                  </TouchableOpacity>
                 </View>
 
-                <View style={styles.buttonContainer}>
-                     <TouchableOpacity style={styles.button} onPress={() => changeMinuto(3,minutosLargo,minutosCorto)}>
-                     <Text style={styles.buttonText}>{'+'}</Text>
-                     </TouchableOpacity>
-                     <Text style={styles.counterText}>{minutosCorto}</Text>
-                     <TouchableOpacity style={styles.button} onPress={() => changeMinuto(4,minutosLargo,minutosCorto)}>
-                     <Text style={styles.buttonText}>{'-'}</Text>
-                     </TouchableOpacity>
-                </View>
             </View>
           </View>
         )

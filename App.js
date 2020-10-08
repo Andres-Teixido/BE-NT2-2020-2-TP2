@@ -4,7 +4,7 @@ import {TouchableOpacity, Button, StyleSheet, Text, View } from 'react-native';
 import {vibrate} from './utils'
 import Modo from "./components/modo";
 import Digitos from "./components/digitos";
-import Configuracion from "./components/config";
+import Config from "./components/config";
 
 export default function App() {
 
@@ -45,30 +45,17 @@ export default function App() {
           </TouchableOpacity>
         </View>
 
-        <Text style={styles.buttonText}>__________________________________________________________________</Text>
-        <Text style={styles.buttonText}>Configuración</Text>
-        <Text style={styles.buttonText}>__________________________________________________________________</Text>
-
         <View style={styles.buttonContainer}>
-              <TouchableOpacity style={styles.button} onPress={() => changeMinuto(1,minutosLargo,minutosCorto)}>
-              <Text style={styles.buttonText}>{'+'}</Text>
-              </TouchableOpacity>
-              <Text style={styles.counterText}>{minutosLargo}</Text>
-              <TouchableOpacity style={styles.button} onPress={() => changeMinuto(2,minutosLargo,minutosCorto)}>
-              <Text style={styles.buttonText}>{'-'}</Text>
-              </TouchableOpacity>
+              <Config 
+                run={run}
+                minutosLargo = {minutosLargo}
+                minutosCorto = {minutosCorto}
+                fun1={() => changeMinuto(1,minutosLargo,minutosCorto)}
+                fun2={() => changeMinuto(2,minutosLargo,minutosCorto)}
+                fun3={() => changeMinuto(3,minutosLargo,minutosCorto)}
+                fun4={() => changeMinuto(4,minutosLargo,minutosCorto)}
+                />
         </View>
-
-        <View style={styles.buttonContainer}>
-              <TouchableOpacity style={styles.button} onPress={() => changeMinuto(3,minutosLargo,minutosCorto)}>
-              <Text style={styles.buttonText}>{'+'}</Text>
-              </TouchableOpacity>
-              <Text style={styles.counterText}>{minutosCorto}</Text>
-              <TouchableOpacity style={styles.button} onPress={() => changeMinuto(4,minutosLargo,minutosCorto)}>
-              <Text style={styles.buttonText}>{'-'}</Text>
-              </TouchableOpacity>
-        </View>
-
       </View>
     </View>
   );
