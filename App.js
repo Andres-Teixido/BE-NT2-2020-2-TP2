@@ -50,10 +50,10 @@ export default function App() {
                 run={run}
                 minutosLargo = {minutosLargo}
                 minutosCorto = {minutosCorto}
-                fun1={() => changeMinuto(1,minutosLargo,minutosCorto)}
-                fun2={() => changeMinuto(2,minutosLargo,minutosCorto)}
-                fun3={() => changeMinuto(3,minutosLargo,minutosCorto)}
-                fun4={() => changeMinuto(4,minutosLargo,minutosCorto)}
+                fun1={() => changeMinuto(1)}
+                fun2={() => changeMinuto(2)}
+                fun3={() => changeMinuto(3)}
+                fun4={() => changeMinuto(4)}
                 />
         </View>
       </View>
